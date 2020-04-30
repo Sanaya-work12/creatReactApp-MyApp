@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import Radium, { StyleRoot } from 'radium';
 import Person from './Person/Person';
 
 // import React, { useState } from 'react';
@@ -77,7 +78,7 @@ class App extends Component {
     // })
 
     // Dynamically using lists
-    const personIndex = this.state.persons.findIndex( per => {
+    const personIndex = this.state.persons.findIndex(per => {
       return per.id === id
     });
 
@@ -93,7 +94,7 @@ class App extends Component {
     const persons = [...this.state.persons];
     persons[personIndex] = person;
 
-    this.setState({ persons: persons});
+    this.setState({ persons: persons });
   }
 
   togglePersonHandler = () => {
@@ -116,9 +117,15 @@ class App extends Component {
     //inline styles
     const style = {
       backgroundColor: 'green',
+      color: 'white',
       font: 'inherit',
       border: '1px solid blue',
-      padding: '8px'
+      padding: '8px',
+      cursor: 'pointer',
+      ':hover': {
+        backgroundColor: 'lightgreen',
+        color: 'black'
+      }
     }
 
     // eslint-disable-next-line
@@ -130,38 +137,44 @@ class App extends Component {
       person = (
         <div>
           {this.state.persons.map((person, index) => {
-            return <Person click={ () => this.deletePersonHandler(index) } name={person.name} age={person.age} key={person.id} changed={ (event) => this.nameChangeHandler(event, person.id) } />
+            return <Person click={() => this.deletePersonHandler(index)} name={person.name} age={person.age} key={person.id} changed={(event) => this.nameChangeHandler(event, person.id)} />
           })}
         </div>
       );
 
       style.backgroundColor = 'red';
+      style[':hover'] = {
+        backgroundColor: 'salmon',
+        color: 'black'
+      }
     }
 
     const classes = [];
 
-    if(this.state.persons.length <= 2) {
+    if (this.state.persons.length <= 2) {
       classes.push('red');
     }
-    if(this.state.persons.length <= 1) {
+    if (this.state.persons.length <= 1) {
       classes.push('bold');
     }
 
     //1. return a dom structure - Use JSX (recommended)
     // Passing props between components
     return (
-      <div className="App">
-        <h1>
-          My React Application.
+      <StyleRoot>
+        <div className="App">
+          <h1>
+            My React Application.
         </h1>
-        <p className={ classes.join(' ') }>
-          This is really working!
+          <p className={classes.join(' ')}>
+            This is really working!
         </p>
-        <button 
-          style={style}
-          onClick={this.togglePersonHandler}>Switch Name</button>
-        {person}
-      </div>
+          <button
+            style={style}
+            onClick={this.togglePersonHandler}>Switch Name</button>
+          {person}
+        </div>
+      </StyleRoot>
     );
 
     // 2. treats h1 as text and outputs h1 Hi! I'm a React App!!!
@@ -173,4 +186,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Radium(App);
