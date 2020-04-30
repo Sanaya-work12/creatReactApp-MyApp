@@ -92,6 +92,29 @@ class App extends Component {
       padding: '8px'
     }
 
+    // eslint-disable-next-line
+    {/** Preferred way of outputting Conditional Content */}
+    
+    let person = null;
+
+    if( this.state.showPerson ) {
+      person = (
+        <div>
+        <Person
+          name={this.state.persons[0].name}
+          age={this.state.persons[0].age} />
+        <Person
+          name={this.state.persons[1].name}
+          age={this.state.persons[1].age}
+          changed={this.nameChangeHandler}>My Hobbies: Racing</Person>
+        <Person
+          click={this.switchNameHandler.bind(this, 'Priya')}
+          name={this.state.persons[2].name}
+          age={this.state.persons[2].age} />
+      </div>
+      );
+    }
+
     //1. return a dom structure - Use JSX (recommended)
     // Passing props between components
     return (
@@ -99,29 +122,10 @@ class App extends Component {
         <h1>
           My React Application.
         </h1>
-        {/** <button 
-          style={ style }
-        onClick={ this.switchNameHandler.bind(this, 'Preeti') }>Switch Name</button>*/ }
         <button
           style={style}
           onClick={this.togglePersonHandler}>Switch Name</button>
-        {
-          this.state.showPerson ?
-            <div>
-              <Person
-                name={this.state.persons[0].name}
-                age={this.state.persons[0].age} />
-              <Person
-                name={this.state.persons[1].name}
-                age={this.state.persons[1].age}
-                changed={this.nameChangeHandler}>My Hobbies: Racing</Person>
-              <Person
-                click={this.switchNameHandler.bind(this, 'Priya')}
-                name={this.state.persons[2].name}
-                age={this.state.persons[2].age} />
-            </div> : null
-        }
-
+        { person }
       </div>
     );
 
