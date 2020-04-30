@@ -44,9 +44,9 @@ class App extends Component {
 
   state = {
     persons: [
-      { name: 'Shruti', age: 24 },
-      { name: 'Rajat', age: 23 },
-      { name: 'Twinkle', age: 10 }
+      { id: 'as3eee', name: 'Shruti', age: 24 },
+      { id: 'as3e', name: 'Rajat', age: 23 },
+      { id: 'as3e23', name: 'Twinkle', age: 10 }
     ],
     showPerson: false
   }
@@ -57,24 +57,43 @@ class App extends Component {
 
     this.setState({
       persons: [
-        { name: newName, age: 24 },
-        { name: 'Rajat', age: 25 },
-        { name: 'Nannu', age: 14 }
+        { id: 'as3eee', name: newName, age: 24 },
+        { id: 'as3e', name: 'Rajat', age: 25 },
+        { id: 'as3e23', name: 'Nannu', age: 14 }
       ]
     })
   }
 
-  nameChangeHandler = (event) => {
+  nameChangeHandler = (event, id) => {
     //console.log('Clicked')
     // Don't do this: this.state.person[0].name = Sanaya
 
-    this.setState({
-      persons: [
-        { name: 'Shruti', age: 24 },
-        { name: event.target.value, age: 25 },
-        { name: 'Nannu', age: 14 }
-      ]
-    })
+    // this.setState({
+    //   persons: [
+    //     { id: 'as3eee', name: 'Shruti', age: 24 },
+    //     { id: 'as3e', name: event.target.value, age: 25 },
+    //     { id: 'as3e23', name: 'Nannu', age: 14 }
+    //   ]
+    // })
+
+    // Dynamically using lists
+    const personIndex = this.state.persons.findIndex( per => {
+      return per.id === id
+    });
+
+    const person = {
+      ...this.state.persons[personIndex]
+    }
+
+    // another way to copy a javascript object- not recommended
+    //const persons = Object.assign({}, this.state.persons[personIndex]);
+
+    person.name = event.target.value;
+
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+
+    this.setState({ persons: persons});
   }
 
   togglePersonHandler = () => {
@@ -111,7 +130,7 @@ class App extends Component {
       person = (
         <div>
           {this.state.persons.map((person, index) => {
-            return <Person click={ () => this.deletePersonHandler(index) } name={person.name} age={person.age} />
+            return <Person click={ () => this.deletePersonHandler(index) } name={person.name} age={person.age} key={person.id} changed={ (event) => this.nameChangeHandler(event, person.id) } />
           })}
         </div>
       );
