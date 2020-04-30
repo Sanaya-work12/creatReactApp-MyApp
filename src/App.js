@@ -80,7 +80,13 @@ class App extends Component {
   togglePersonHandler = () => {
     const doesState = this.state.showPerson;
 
-    this.setState({showPerson: !doesState});
+    this.setState({ showPerson: !doesState });
+  }
+
+  deletePersonHandler = (personIndex) => {
+    const persons = this.state.persons;
+    persons.splice(personIndex, 1);
+    this.setState({ persons: persons });
   }
 
   render() {
@@ -93,17 +99,17 @@ class App extends Component {
     }
 
     // eslint-disable-next-line
-    {/** Preferred way of outputting Conditional Content */}
+    {/** Preferred way of outputting Conditional Content */ }
 
     let person = null;
 
-    if( this.state.showPerson ) {
+    if (this.state.showPerson) {
       person = (
         <div>
-          { this.state.persons.map(person => {
-            return <Person name={ person.name } age={ person.age } />
-          }) }
-      </div>
+          {this.state.persons.map((person, index) => {
+            return <Person click={ () => this.deletePersonHandler(index) } name={person.name} age={person.age} />
+          })}
+        </div>
       );
     }
 
@@ -117,7 +123,7 @@ class App extends Component {
         <button
           style={style}
           onClick={this.togglePersonHandler}>Switch Name</button>
-        { person }
+        {person}
       </div>
     );
 
