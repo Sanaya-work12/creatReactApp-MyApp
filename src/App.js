@@ -115,7 +115,7 @@ class App extends Component {
   render() {
     //inline styles
     const style = {
-      backgroundColor: 'white',
+      backgroundColor: 'green',
       font: 'inherit',
       border: '1px solid blue',
       padding: '8px'
@@ -134,6 +134,17 @@ class App extends Component {
           })}
         </div>
       );
+
+      style.backgroundColor = 'red';
+    }
+
+    const classes = [];
+
+    if(this.state.persons.length <= 2) {
+      classes.push('red');
+    }
+    if(this.state.persons.length <= 1) {
+      classes.push('bold');
     }
 
     //1. return a dom structure - Use JSX (recommended)
@@ -143,7 +154,10 @@ class App extends Component {
         <h1>
           My React Application.
         </h1>
-        <button
+        <p className={ classes.join(' ') }>
+          This is really working!
+        </p>
+        <button 
           style={style}
           onClick={this.togglePersonHandler}>Switch Name</button>
         {person}
