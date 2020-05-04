@@ -1,45 +1,21 @@
 import React, { Component } from 'react';
 import './App.css';
-import Radium, { StyleRoot } from 'radium';
 import Person from './Person/Person';
+import styled from 'styled-components';
 
-// import React, { useState } from 'react';
+const StyledButton = styled.button`
+  background-color: ${props => props.impstate ? 'red' : 'green'};
+  color: white;
+  font: inherit;
+  border: 1px solid blue;
+  padding: 8px;
+  cursor: pointer;
 
-// const App = props => {
-
-//   const [ personsState, setPersonsState ] = useState({
-//     persons: [
-//       { name: 'Shruti', age: 24 },
-//       { name: 'Rajat', age: 23 }
-//     ]
-//   });
-
-//   const switchNameHandler = () => {
-//     //console.log('Clicked')
-//     // Don't do this: this.state.person[0].name = Sanaya
-
-//     setPersonsState({
-//       persons: [
-//         { name: 'Sanaya', age: 24 },
-//         { name: 'Rajat', age: 25 }
-//       ]
-//     });
-//   }
-
-//   return (
-//     <div className="App">
-//       <h1>
-//         My React Application.
-//       </h1>
-//       <button onClick={ switchNameHandler }>Switch Name</button>
-//       <Person name={ personsState.persons[0].name } age={ personsState.persons[0].age } />
-//       <Person name={ personsState.persons[1].name } age={ personsState.persons[1].age }>My Hobbies: Racing</Person>
-
-//     </div>
-//   );
-// }
-
-
+  &:hover {
+    background-color: ${props => props.impstate ? 'salmon' : 'lightgreen'};
+    color: black;
+  }
+`;
 
 class App extends Component {
 
@@ -53,8 +29,6 @@ class App extends Component {
   }
 
   switchNameHandler = (newName) => {
-    //console.log('Clicked')
-    // Don't do this: this.state.person[0].name = Sanaya
 
     this.setState({
       persons: [
@@ -66,18 +40,7 @@ class App extends Component {
   }
 
   nameChangeHandler = (event, id) => {
-    //console.log('Clicked')
-    // Don't do this: this.state.person[0].name = Sanaya
 
-    // this.setState({
-    //   persons: [
-    //     { id: 'as3eee', name: 'Shruti', age: 24 },
-    //     { id: 'as3e', name: event.target.value, age: 25 },
-    //     { id: 'as3e23', name: 'Nannu', age: 14 }
-    //   ]
-    // })
-
-    // Dynamically using lists
     const personIndex = this.state.persons.findIndex(per => {
       return per.id === id
     });
@@ -85,9 +48,6 @@ class App extends Component {
     const person = {
       ...this.state.persons[personIndex]
     }
-
-    // another way to copy a javascript object- not recommended
-    //const persons = Object.assign({}, this.state.persons[personIndex]);
 
     person.name = event.target.value;
 
@@ -104,9 +64,6 @@ class App extends Component {
   }
 
   deletePersonHandler = (personIndex) => {
-    // const persons = this.state.persons;
-    // save the previous array before
-    // const persons = this.state.persons.slice();
 
     const persons = [...this.state.persons];
     persons.splice(personIndex, 1);
@@ -114,22 +71,6 @@ class App extends Component {
   }
 
   render() {
-    //inline styles
-    const style = {
-      backgroundColor: 'green',
-      color: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer',
-      ':hover': {
-        backgroundColor: 'lightgreen',
-        color: 'black'
-      }
-    }
-
-    // eslint-disable-next-line
-    {/** Preferred way of outputting Conditional Content */ }
 
     let person = null;
 
@@ -141,12 +82,6 @@ class App extends Component {
           })}
         </div>
       );
-
-      style.backgroundColor = 'red';
-      style[':hover'] = {
-        backgroundColor: 'salmon',
-        color: 'black'
-      }
     }
 
     const classes = [];
@@ -158,32 +93,19 @@ class App extends Component {
       classes.push('bold');
     }
 
-    //1. return a dom structure - Use JSX (recommended)
-    // Passing props between components
     return (
-      <StyleRoot>
-        <div className="App">
-          <h1>
-            My React Application.
+      <div className="App">
+        <h1>
+          My React Application.
         </h1>
-          <p className={classes.join(' ')}>
-            This is really working!
+        <p className={classes.join(' ')}>
+          This is really working!
         </p>
-          <button
-            style={style}
-            onClick={this.togglePersonHandler}>Switch Name</button>
-          {person}
-        </div>
-      </StyleRoot>
+        <StyledButton impstate={this.state.showPerson} onClick={this.togglePersonHandler}>Switch Name</StyledButton>
+        {person}
+      </div>
     );
-
-    // 2. treats h1 as text and outputs h1 Hi! I'm a React App!!!
-    // React.createElement(element, JavascriptObject, any number of children)
-    // return React.createElement('div', null, 'h1', 'Hi! I\'m a React App!!!');
-    // Solution - BUT, Tough to Nest
-    // return React.createElement('div', {className: 'App'}, React.createElement('h1' , null, 'Hi! I\'m a React App!!!'));
-
   }
 }
 
-export default Radium(App);
+export default App;
