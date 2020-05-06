@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classes from './App.module.css';
 import Person from './Person/Person';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
 
@@ -64,7 +65,10 @@ class App extends Component {
       person = (
         <div>
           {this.state.persons.map((person, index) => {
-            return <Person click={() => this.deletePersonHandler(index)} name={person.name} age={person.age} key={person.id} changed={(event) => this.nameChangeHandler(event, person.id)} />
+            //key is always at the outer element in the map method bcz that is the method we replicate
+            return (<ErrorBoundary key={person.id}>
+              <Person click={() => this.deletePersonHandler(index)} name={person.name} age={person.age} changed={(event) => this.nameChangeHandler(event, person.id)} />
+            </ErrorBoundary>);
           })}
         </div>
       );
