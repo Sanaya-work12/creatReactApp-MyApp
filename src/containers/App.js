@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classes from './App.module.css';
-import Person from './Person/Person';
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
 
 class App extends Component {
 
@@ -59,41 +59,14 @@ class App extends Component {
   render() {
 
     let person = null;
-    let btnClass = '';
 
     if (this.state.showPerson) {
-      person = (
-        <div>
-          {this.state.persons.map((person, index) => {
-            //key is always at the outer element in the map method bcz that is the method we replicate
-            return (<ErrorBoundary key={person.id}>
-              <Person click={() => this.deletePersonHandler(index)} name={person.name} age={person.age} changed={(event) => this.nameChangeHandler(event, person.id)} />
-            </ErrorBoundary>);
-          })}
-        </div>
-      );
-
-      btnClass = classes.Red;
-    }
-
-    const assignedClasses = [];
-
-    if (this.state.persons.length <= 2) {
-      assignedClasses.push('red');
-    }
-    if (this.state.persons.length <= 1) {
-      assignedClasses.push('bold');
+      person = <Persons persons={this.state.persons} changed={this.nameChangeHandler} clicked={this.deletePersonHandler}/>;
     }
 
     return (
       <div className={classes.App}>
-        <h1>
-          My React Application.
-        </h1>
-        <p className={assignedClasses.join(' ')}>
-          This is really working!
-        </p>
-        <button className={btnClass} onClick={this.togglePersonHandler}>Switch Name</button>
+        <Cockpit title={this.props.appTitle} personlength={this.state.personlength} clicked={this.togglePersonHandler} showperson={this.state.showPerson} persons={this.state.persons}/>
         {person}
       </div>
     );
